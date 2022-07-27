@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_nursery_flower,nursery.flowers,model_nursery_flowers,base.group_user,1,1,1,1
+access_nursery_hr,nursery.hr,model_nursery_hr,base.group_user,1,1,1,1
+access_create_remittance_wizard,create.remittance.wizard,model_create_remittance_wizard,base.group_user,1,1,1,1

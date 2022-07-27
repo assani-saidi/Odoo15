@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve" owl="1">
+    <t t-name="OrderLineExtended" t-extend="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[@class='responsive-price']" position="replace">
+            <t t-esc="line.product_name_wrapped[0]" />
+            <div class="pos-receipt-left-padding">
+                <span>1 x <span t-esc="env.pos.format_currency_no_symbol(line.price_display)" class="price_display"/></span>
+            </div>
+            <div class="responsive-price">
+                <span t-esc="env.pos.format_currency_no_symbol(line.price_display)" class="price_display pos-receipt-right-align"/>
+            </div>
+        </xpath>
+    </t>
+</templates>
+
+
+<!-- <?xml version="1.0" encoding="utf-8"?>
+<template id="pos_receipt_edit" xml:space="preserve">
+    <t t-extend="OrderLinesReceipt">
+        <t t-jquery=".responsive-price" t-operation="replace">
+            <t t-esc="line.product_name_wrapped[0]" />
+            <div class="pos-receipt-left-padding">
+                <span>1 x <span t-esc="env.pos.format_currency_no_symbol(line.price_display)" class="price_display"/></span>
+            </div>
+            <div class="responsive-price">
+                <span t-esc="env.pos.format_currency_no_symbol(line.price_display)" class="price_display pos-receipt-right-align"/>
+            </div>
+        </t>
+    </t>
+</template> -->

@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <!--  this will add a button to print in list view  -->
+
+    <!--  label list view end  -->
+    <!-- add a button in Views/product.product_template_tree_view  in technical-->
+     <!-- <record id="label_list_view_inherit" model="ir.ui.view">
+        <field name="name">label.view.list.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <xpath expr="//tree" position="inside">
+                <header>
+                    <button name="%(action_label_report)d" string="Print Selected Labels" type="action"/>
+                </header>
+            </xpath>
+     </record> -->
+
+    <!-- this will edit the label -->
+
+    <!-- add a custom paper format in ui -->
+    <record id="label_custom_paper_format" model="report.paperformat">
+        <field name="name">Custom Label Format</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">16</field>
+        <field name="page_width">76</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">1</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- add a report action in ui-->
+     <record id="action_label_report" model="ir.actions.report">
+        <field name="name">Product Label</field> 
+        <field name="model">product.template</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">nursery.report_label</field>
+        <field name="report_file">nursery.report_label</field>
+        <field name="print_report_name">('Label - %s' % (object.display_name))</field>
+        <field name="paperformat_id" ref="nursery.label_custom_paper_format" />
+    </record>
+
+    <!-- add a button in Views/product.template.common.form  in technical-->
+     <record id="label_view_inherit" model="ir.ui.view">
+        <field name="name">label.view.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_open_label_layout']" position="after">
+                <button name="%(action_label_report)d" string="Print Label" type="action"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- end of edit label -->
+
+    <!-- this controls the account print button -->
+     <record id="view_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.move</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_post']" position="after">
+                <button class="oe_highlight" name="%(account_receipt_report)d" string="Print Receipt" type="action"
+                attrs="{'invisible' : [('name', '!=', 'INV/2022/00001')]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_receipt_report" model="ir.actions.report">
+        <field name="name">Receipt Print</field> 
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">nursery.receipt_sale_template</field>
+        <field name="report_file">nursery.receipt_sale_template</field>
+        <field name="print_report_name">('receipt - %s' % (object.display_name))</field>
+        <!-- <field name="paperformat_id" ref="nursery.label_custom_paper_format" /> -->
+    </record>
+
+    <!-- end here -->
+
+    <record id="nursery_custom_paper_format" model="report.paperformat">
+        <field name="name">Custom Payslip Paper Format</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">99</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">2</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">12</field>
+        <field name="margin_right">12</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">90</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_nursery_report" model="ir.actions.report">
+        <field name="name">PaySlip</field> 
+        <field name="model">hr.payslip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">nursery.report_payslip</field>
+        <field name="report_file">nursery.report_payslip</field>
+        <field name="print_report_name">('Payslip - %s' % (object.employee_id.name))</field>
+        <field name="paperformat_id" ref="nursery.nursery_custom_paper_format" />
+        <!-- <field name="binding_model_id" ref="model_hr_payslip"/>
+        <field name="binding_type">report</field> -->
+    </record>
+
+    <!-- extend the employees form view and create print button -->
+    <!-- <record id="hr_payslip_list_view_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.list.view.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="om_hr_payroll.view_hr_payslip_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <header>
+                    <button name="%(action_nssa_report)d" string="NASSA" type="action"/>
+                </header>
+            </xpath>
+        </field>
+    </record> -->
+
+
+
+
+
+
+
+
+
+
+
+<!-- NSSA REPORTS -->
+
+    <!-- REPORT GLOBAL FORMAT -->
+    <record id="nssa_custom_paper_format" model="report.paperformat">
+        <field name="name">Custom NSSA Report Format</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">148</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">1</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="nssa_custom_a4_format" model="report.paperformat">
+        <field name="name">Custom A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">14</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+    <!-- END REPORT FORMAT -->
+
+    <!-- REPORT ACTIONS (these report actions call the qweb report) -->
+    <!-- remittance form report action -->
+    <record id="action_nssa_remittance_report" model="ir.actions.report">
+        <field name="name">action_nssa_remittance_report</field> 
+        <field name="model">hr.payslip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">nursery.report_nssa_remittance</field>
+        <field name="report_file">nursery.report_nssa_remittance</field>
+        <field name="print_report_name">('NASSA Remittance')</field>
+        <field name="paperformat_id" ref="nursery.nssa_custom_a4_format" />
+    </record>
+    <!-- p4 report action -->
+    <record id="action_nssa_form_report" model="ir.actions.report">
+        <field name="name">action_nssa_form_report</field> 
+        <field name="model">hr.payslip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">nursery.report_nssa_form</field>
+        <field name="report_file">nursery.report_nssa_form</field>
+        <field name="print_report_name">('NASSA P4 Form')</field>
+        <field name="paperformat_id" ref="nursery.nssa_custom_paper_format" />
+    </record>
+    <!-- ZIMRA p2 report action -->
+    <record id="action_zimra_p2_report" model="ir.actions.report">
+        <field name="name">action_zimra_p2_report</field> 
+        <field name="model">hr.payslip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">nursery.report_zimra_form</field>
+        <field name="report_file">nursery.report_zimra_form</field>
+        <field name="print_report_name">('ZIMRA P2 Form')</field>
+        <field name="paperformat_id" ref="nursery.nssa_custom_a4_format" />
+    </record>
+    <!-- Payroll summary report action -->
+    <record id="action_payroll_summary_report" model="ir.actions.report">
+        <field name="name">action_payroll_summary_report</field> 
+        <field name="model">hr.payslip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">nursery.report_payroll_summary_form</field>
+        <field name="report_file">nursery.report_payroll_summary_form</field>
+        <field name="print_report_name">('Payroll Summary')</field>
+        <field name="paperformat_id" ref="nursery.nssa_custom_paper_format" />
+    </record>
+     <!-- Payroll payout report action -->
+    <record id="action_payroll_payout_report" model="ir.actions.report">
+        <field name="name">action_payroll_payout_report</field> 
+        <field name="model">hr.payslip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">nursery.report_payroll_printout_form</field>
+        <field name="report_file">nursery.report_payroll_printout_form</field>
+        <field name="print_report_name">('Payroll Payout Form')</field>
+        <field name="paperformat_id" ref="nursery.nssa_custom_a4_format" />
+    </record>
+    <!-- END REPORT ACTIONS -->
+
+    <!-- SERVER ACTIONS (these server actions call the action reports this is the only way we can call reports from the menu) -->
+    <!-- remittance form server report action -->
+    <record id="action_nssa_remittance_server_report" model="ir.actions.server">
+        <field name="name">action_nssa_remittance_server_report</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_nursery_hr"/>
+        <field name="model_id" ref="model_nursery_hr"/>
+        <field name="state">code</field> 
+        <field name="code">
+            action = model.print_nssa_remittance_report()
+        </field>
+    </record>
+    <!-- p4 report action -->
+    <record id="action_nssa_form_server_report" model="ir.actions.server">
+        <field name="name">action_nssa_form_server_report</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_nursery_hr"/>
+        <field name="model_id" ref="model_nursery_hr"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.print_nssa_form_report()
+        </field>
+    </record>
+    <!-- ZIMRA p2 report action -->
+    <record id="action_zimra_p2_server_report" model="ir.actions.server">
+        <field name="name">action_zimra_p2_server_report</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_nursery_hr"/>
+        <field name="model_id" ref="model_nursery_hr"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.print_zimra_form_report()
+        </field>
+    </record>
+    <!-- PAYROLL summary report action -->
+    <record id="action_payroll_summary_server_report" model="ir.actions.server">
+        <field name="name">action_payroll_summary_server_report</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_nursery_hr"/>
+        <field name="model_id" ref="model_nursery_hr"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.print_payroll_summary_report()
+        </field>
+    </record>
+    <!-- PAYROLL payout form report action -->
+    <record id="action_payroll_payout_server_report" model="ir.actions.server">
+        <field name="name">action_payroll_payout_server_report</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_nursery_hr"/>
+        <field name="model_id" ref="model_nursery_hr"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.print_payroll_payout_report()
+        </field>
+    </record>
+    <!-- END SERVER ACTIONS -->
+
+
+<!-- END NSSA REPORTS -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <record id="hr_payslip_view_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.view.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="om_hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_send_email']" position="after">
+                <button name="%(action_nursery_report)d" string="Print" type="action"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- <record id="hr_payslip_view_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.view.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="om_hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_send_email']" position="after">
+                <button name="print_button_action" string="Print" type="object" class="btn-primary"/>
+            </xpath>
+        </field>
+    </record> -->
+
+</odoo>

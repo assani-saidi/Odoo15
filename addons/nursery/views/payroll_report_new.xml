@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="report_payslip">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.basic_layout">
+                    <div class="paper" style="font-family: Barlow">
+                        <style type="text/css">
+                            .paper{
+                                font-size: 0.76em !important;
+                                overflow: hidden !important;
+                                text-overflow: hidden !important;
+                                max-height: 100% !important;
+                            }
+                        </style>
+                        <div class="d-inline-flex">
+                            <img height="120" style="overflow: hidden !important; max-height: 115px !important;" t-attf-src="/web/binary/company_logo" alt="logo here"/>
+                            <div style="margin-left: 100px !important; margin-top: 5px;">
+                                <span style="font-size: 0.7em !important; font-weight: bold !important;" t-esc="doc.company_id.name"/>
+                                <span style="font-size: 0.7em !important;" t-esc="doc.company_id.company_details"/>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="d-flex flex-column">
+                            <div t-field="doc.name" style="width: 50% !important;"/>
+                            <div style="width: 50% !important; text-align: right !important; font-weight: bold !important;">MONTHLY PAYROLL</div>
+                        </div>
+                        <br/>
+                        <!-- 1st quater code -->
+                        <div class="row" >
+                           <div class="col-4">
+                                <div>
+                                    <span style="padding-right: 13px !important; font-weight: bold !important;">Full Name:</span>
+                                    <span t-field="doc.employee_id.name"/>
+                                </div>
+                                <div>
+                                    <span style="padding-right: 13px !important; font-weight: bold !important;">ID Number:</span>
+                                    <span t-field="doc.employee_id.identification_id"/>
+                                </div>
+                                <div>
+                                    <span style="padding-right: 13px !important; font-weight: bold !important;">Date Joined:</span>
+                                    <span t-esc="doc.employee_id.create_date.strftime('%Y-%m-%d')"/>
+                                </div>
+                                <div>
+                                    <span style="padding-right: 13px !important; font-weight: bold !important;">Loan:</span>
+                                    <span>0.00  $0.00</span>
+                                </div>
+                                <div>
+                                    <span style="padding-right: 13px !important; font-weight: bold !important;">Bank:</span>
+                                    <span t-field="doc.employee_id.bank_account_id.bank_id.name"/>
+                                </div>
+                           </div>
+                           <div class="col-4">
+                                <div>
+                                    <span style="padding-right: 13px !important; font-weight: bold !important;">Work Number:</span>
+                                    <span t-field="doc.id"/>
+                                </div>
+                                <div>
+                                    <span style="padding-right: 13px !important; font-weight: bold !important;">Department:</span>
+                                    <span t-field="doc.employee_id.department_id.name"/>
+                                </div>
+                                <div>
+                                    <span style="padding-right: 13px !important; font-weight: bold !important;">Leave Taken:</span>
+                                    <span>0.00</span>
+                                </div>
+                                <div>
+                                    <span style="padding-right: 13px !important; font-weight: bold !important;">NSSA No:</span>
+                                    <span>N/A</span>
+                                </div>
+                                <div>
+                                    <span style="padding-right: 13px !important; font-weight: bold !important;">Branch:</span>
+                                    <span t-field="doc.employee_id.bank_account_id.bank_id.city"/>
+                                </div>
+                           </div>
+                           <div class="col-4">
+                                <div>
+                                    <span style="padding-right: 13px !important; font-weight: bold !important;">Date:</span>
+                                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+                                </div>
+                                <div>
+                                    <span style="padding-right: 13px !important; font-weight: bold !important;">Position:</span>
+                                    <span t-field="doc.employee_id.job_title"/>
+                                </div>
+                                <div>
+                                    <span style="padding-right: 13px !important; font-weight: bold !important;">Leave Balance:</span>
+                                    <span>0.00</span>
+                                </div>
+                                 <div>
+                                    <span style="padding-right: 13px !important; font-weight: bold !important;">Medical Aid No:</span>
+                                    <span>0.00</span>
+                                </div>
+                                <div>
+                                    <span style="padding-right: 13px !important; font-weight: bold !important;">Account Number:</span>
+                                    <span t-field="doc.employee_id.bank_account_id.acc_number"/>
+                                </div>
+                           </div>
+                        </div>
+                        <!-- end 1st quater code -->
+                        <hr/>
+                        <!-- 2nd quater -->
+                        <div class="row">
+                            <div class="col-6">
+                            <t t-foreach="doc.line_ids" t-as="line">
+                                <t t-if="line.code == 'BASIC'">
+                                    <div class="d-flex flex-column">
+                                        <div style="width: 45% !important;">
+                                            <span t-field="line.name"/>
+                                        </div>
+                                        <div class="text-right" style="width: 45% !important;">
+                                            <span t-esc="line.amount"/>
+                                        </div>
+                                    </div>
+                                </t>
+                                <t t-if="line.category_id.name == 'Allowance'">
+                                    <div class="d-flex flex-column">
+                                        <div style="width: 45% !important;">
+                                            <span t-field="line.name"/>
+                                        </div>
+                                        <div class="text-right" style="width: 45% !important;">
+                                            <span t-esc="line.amount"/>
+                                        </div>
+                                    </div>
+                                </t>
+                            </t>
+                            </div>
+                            <div class="col-6">
+                            <t t-foreach="doc.line_ids" t-as="line">
+                                <t t-if="line.category_id.name == 'Deduction'">
+                                    <div class="d-flex flex-column text-danger w-100">
+                                        <div style="width: 45% !important;">
+                                            <span t-field="line.name"/>
+                                        </div>
+                                        <div class="text-right" style="width: 45% !important;">
+                                            <span t-esc="line.amount"/>
+                                        </div>
+                                    </div>
+                                </t>
+                            </t>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <hr/>
+                        <!-- last quarter -->
+                         <div class="row">
+                            <t t-set="deductions" t-value="0"/>
+                            <div class="col-6">
+                            <t t-foreach="doc.line_ids" t-as="line">
+                            <t t-if="line.code == 'GROSS'">
+                                <t t-set="deductions" t-value="deductions + line.amount"/>
+                            </t>
+                            <t t-if="line.code == 'NET'">
+                                <t t-set="deductions" t-value="deductions - line.amount"/>
+                            </t>
+                                <t t-if="line.code == 'GROSS'">
+                                    <div class="d-flex flex-column">
+                                        <div style="width: 45% !important;">
+                                            <span t-field="line.name"/>
+                                        </div>
+                                        <div class="text-right" style="width: 45% !important;">
+                                            <span t-esc="line.amount"/>
+                                        </div>
+                                    </div>
+                                </t>
+                            </t>
+                            <div class="d-flex flex-column">
+                                <div style="width: 20% !important;">
+                                    <span>Benefits</span>
+                                </div>
+                                <div style="width: 20% !important; padding-left: 10px !important;">
+                                    <span>0.00</span>
+                                </div>
+                                <div style="width: 20% !important; padding-left: 10px !important;">
+                                    <span>Credits</span>
+                                </div>
+                                <div class="text-right" style="width: 30% !important;">
+                                    <span>0.00</span>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="col-6">
+                             <div class="d-flex flex-column text-danger">
+                                <div style="width: 45% !important;">
+                                    <span>Total Deductions:</span>
+                                </div>
+                                <div class="text-right" style="width: 45% !important; padding-left: 10px !important;">
+                                    <t t-esc="'%i' % deductions"/>
+                                </div>
+                            </div>
+                            <t t-foreach="doc.line_ids" t-as="line">
+                                <t t-if="line.code == 'NET'">
+                                    <div class="d-flex flex-column">
+                                        <div style="width: 45% !important;">
+                                            <span t-field="line.name"/>
+                                        </div>
+                                        <div class="text-right" style="width: 45% !important;">
+                                            <span t-esc="line.amount"/>
+                                        </div>
+                                    </div>
+                                </t>
+                            </t>
+                            </div>
+                        </div>
+                        <hr/>
+                        <!-- end -->
+
+
+
+                        <!-- <p t-field="o.name"/>
+
+                        <table class="table table-sm table-bordered">
+                            <tr>
+                                <td>
+                                    <strong>Name</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id"/>
+                                </td>
+                                <td>
+                                    <strong>Designation</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id.job_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Address</strong>
+                                </td>
+                                <td colspan="3">
+                                    <div t-field="o.employee_id.address_home_id"
+                                            t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Email</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id.work_email"/>
+                                </td>
+                                <td>
+                                    <strong>Identification No</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id.identification_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Reference</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.number"/>
+                                </td>
+                                <td>
+                                    <strong>Bank Account</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id.bank_account_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Date From</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.date_from"/>
+                                </td>
+                                <td>
+                                    <strong>Date To</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.date_to"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="table table-sm">
+                            <thead>
+                                <tr> or line.code == 'NET' or line.code == 'GROSS'
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Quantity/rate</th>
+                                    <th>Amount</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip)" t-as="line">
+                                    <td>
+                                        <span t-field="line.code"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.quantity"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line.amount"
+                                                t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line.total"
+                                                t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p class="text-right">
+                            <strong>Authorized signature</strong>
+                        </p> -->
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,52 @@
+<odoo>
+
+    <record id="action_nursery_flowers_tree" model="ir.ui.view">
+        <field name="name">Nursery Flowers Tree Action</field>
+        <field name="model">nursery.flowers</field>
+        <field name="arch" type="xml">
+            <tree>
+                <!-- <button string="test" name="nursery_button" type="object" class="oe_highlight"/> -->
+                <field name="name"/>
+                <field name="price"/>
+                <field name="species"/>
+                <field name="growing_days"/>
+                <field name="seed_germination_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_nursery_flowers_form" model="ir.ui.view">
+        <field name="name">Nursery Flowers Form Action</field>
+        <field name="model">nursery.flowers</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="price"/>
+                            <field name="species"/>
+                        </group> 
+                        <group>
+                            <field name="growing_days"/>
+                            <field name="seed_germination_date"/>
+                        </group>
+                    </group>                     
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_nursery_flowers" model = "ir.actions.act_window">
+        <field name="name">Nursery Flowers Action</field>
+        <field name="res_model">nursery.flowers</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_root_nursery_flowers" name="Nursery" sequence="10"/>
+    <menuitem id="menu_nursery_flowers" name="Flowers" action="action_nursery_flowers" 
+    parent="menu_root_nursery_flowers" sequence="10"/> 
+</odoo>
+
+<!-- action="action_nursery_flowers" 
+    parent="menu_root_nursery_flowers"  -->

@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="addons\ratings.list">
+      <field name="name">addons\ratings list</field>
+      <field name="model">addons\ratings.addons\ratings</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="addons\ratings.action_window">
+      <field name="name">addons\ratings window</field>
+      <field name="res_model">addons\ratings.addons\ratings</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="addons\ratings.action_server">
+      <field name="name">addons\ratings server</field>
+      <field name="model_id" ref="model_addons\ratings_addons\ratings"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="addons\ratings" id="addons\ratings.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="addons\ratings.menu_1" parent="addons\ratings.menu_root"/>
+    <menuitem name="Menu 2" id="addons\ratings.menu_2" parent="addons\ratings.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="addons\ratings.menu_1_list" parent="addons\ratings.menu_1"
+              action="addons\ratings.action_window"/>
+    <menuitem name="Server to list" id="addons\ratings" parent="addons\ratings.menu_2"
+              action="addons\ratings.action_server"/>
+-->
+  </data>
+</odoo>

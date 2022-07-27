@@ -1,0 +1,11 @@
+<odoo>
+    <record id="estate_model_action" model = "ir.actions.act_window">
+        <field name="name">Estate Action</field>
+        <field name="res_model">estate.estates</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="estate_menu_root" sequence="10"/>
+    <menuitem id="estate_model_menu_action" action="estate_model_action" parent="estate_menu_root"
+    sequence="10"/> 
+</odoo>

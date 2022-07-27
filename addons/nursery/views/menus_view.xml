@@ -1,0 +1,10 @@
+<odoo>
+    <menuitem id="menu_payroll_reports" parent="om_hr_payroll.menu_hr_payroll_root" name="Reports" sequence="10"/>
+    <!-- these are the submenus -->
+    <!-- <menuitem id="payroll_nssa_remittance_report" parent="menu_payroll_reports" name="NSSA remittance" sequence="1" action="action_nssa_remittance_server_report"/> -->
+    <menuitem id="payroll_summary_report" parent="menu_payroll_reports" name="Payroll Summary" sequence="1" action="action_open_summary_view"/>
+    <menuitem id="payroll_payout_report" parent="menu_payroll_reports" name="Payout Form" sequence="2" action="action_payroll_payout_server_report"/>
+    <menuitem id="payroll_nssa_remittance_report" parent="menu_payroll_reports" name="NSSA Remittance" sequence="3" action="action_open_remittance_view"/>
+    <menuitem id="payroll_nssa_form_report" parent="menu_payroll_reports" name="NSSA P4 Form" sequence="4" action="action_nssa_form_server_report"/>
+    <menuitem id="payroll_zimra_form_report" parent="menu_payroll_reports" name="ZIMRA P2 Form" sequence="5" action="action_zimra_p2_server_report"/>
+</odoo>

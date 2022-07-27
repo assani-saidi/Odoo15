@@ -1,0 +1,915 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>  
+    <template id="report_payslip">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div style="text-align: right; margin-bottom: 8px;">
+                            <span style="font-weight: bold; padding-right: 3px">
+                                DATE: 
+                            </span>
+                            <span style="font-weight: 100">
+                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/> 
+                            </span>
+                            <span style="padding-left: 20px; font-weight: bold;">MONTHLY</span>
+                            <span style="padding-left: 5px; font-weight: bold;">PAYROLL</span>
+                        </div>
+                        <table style="margin-top: 20px;" class="table table-sm">
+                            <tr>
+                                <td style = "padding-right: 20px;"><strong style="padding-right: 20px; font-weight: bolder;">Full Name:</strong><span><p t-field="doc.employee_id.name" /></span></td>
+                                <td style = "padding-right: 20px;"><strong style="padding-right: 20px; font-weight: bolder;">Job Title:</strong><span><p t-field="doc.employee_id.job_title"/></span></td>
+                                <td style = "padding-right: 20px;"><strong style="padding-right: 20px; font-weight: bolder;">Department:</strong><span><p t-field="doc.employee_id.department_id"/></span></td>
+                            </tr>
+                            <tr>
+                                <td style = "padding-right: 20px;"><strong style="padding-right: 20px; font-weight: bolder;">ID Number:</strong><span><p t-field="doc.employee_id.identification_id"/></span></td>
+                                <td style = "padding-right: 20px;"><strong style="padding-right: 20px; font-weight: bolder;">Work Number:</strong><span><p t-field="doc.employee_id.sinid"/></span></td>
+                                <td style = "padding-right: 20px;"><strong style="padding-right: 20px; font-weight: bolder;">Date Joined:</strong><span><p t-field="doc.employee_id.create_date" t-field-options="{'format': 'dd/MM/yyyy'}"/></span></td>
+                            </tr>
+                            <tr>
+                                <td style = "padding-right: 20px;"><strong style="padding-right: 20px; font-weight: bolder;">Days Taken:</strong><span>_</span></td>
+                                <td style = "padding-right: 20px;"><strong style="padding-right: 20px; font-weight: bolder;">Leave Bal:</strong><span>_</span></td>
+                                <td style = "padding-right: 20px;"><strong style="padding-right: 20px; font-weight: bolder;">Loan ZW+USD:</strong><span>_</span><span style="padding-left: 5px;">$</span></td>
+                            </tr>
+                            <tr>
+                                 <td style = "padding-right: 20px;"><strong style="padding-right: 20px; font-weight: bolder;">Bank:</strong><span><p t-field="doc.employee_id.bank_account_id"/></span></td>
+                                <td style = "padding-right: 20px;"><strong style="padding-right: 20px; font-weight: bolder;">Branch:</strong><span><p t-field="doc.employee_id.bank_account_id.acc_holder_name"/></span></td>
+                                <td style = "padding-right: 20px;"><strong style="padding-right: 20px; font-weight: bolder;">Account Number:</strong><span><p t-field="doc.employee_id.bank_account_id.acc_holder_name"/></span></td>
+                            </tr>
+                            <tr>
+                                <td style="padding-right: 20px;"><strong style="padding-right: 20px; font-weight: bolder;">NSSA No:</strong><span>_</span></td>
+                                <td style="padding-right: 20px;"><strong style="padding-right: 20px; font-weight: bolder;">Medical Aid No:</strong><span>_</span></td>
+                            </tr>
+                        </table>
+                        <hr/>
+                        <t t-foreach="doc.line_ids" t-as="line">
+                            <table style="width: 100%;">
+                                <tr>
+                                <t t-if="line.code == 'BASIC'">
+                                    <td>Basic Salary:</td>
+                                    <td><span t-field="doc.line_ids" /></td>
+                                </t>
+                                <td style="color: red">P.A.Y.E</td>
+                                <td style="color: red">19876</td>
+                                </tr>
+                                <tr>
+                                <td>Allowances:</td>
+                                <td>38559</td>
+                                <td style="color: red">AIDS Levy</td>
+                                <td style="color: red">58,69</td>
+                                </tr>
+                                <tr>
+                                <td></td>
+                                <td></td>
+                                <td style="color: red">NSSA</td>
+                                <td style="color: red">15698</td>
+                                </tr>
+                                <tr>
+                                <td></td>
+                                <td></td>
+                                <td style="color: red">NEC</td>
+                                <td style="color: red">48</td>
+                                </tr>
+                            </table>
+                        </t> 
+                        <hr/>
+                        <table style="width: 100%;">
+                            <t t-foreach="doc.line_ids" t-as="line">
+                                <tr>
+                                    <t t-if="line.code == 'GROSS'">
+                                        <td><span t-esc="line.code"/>:</td>
+                                        <td><span t-esc="line.amount"/></td>
+                                    </t>
+                                    <t t-if="line.code == 'DEDUCTIONS'">
+                                        <td><span t-esc="line.code"/>:</td>
+                                        <td><span t-esc="line.amount"/></td>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <t t-if="line.code == 'BENEFITS'">
+                                        <td><span t-esc="line.code"/>:</td>
+                                        <td><span t-esc="line.amount"/></td>
+                                    </t>
+                                    <t t-if="line.code == 'TAX'">
+                                        <td><span t-esc="line.code"/>:</td>
+                                        <td><span t-esc="line.amount"/></td>
+                                    </t>
+                                    <t t-if="line.code == 'NET'">
+                                        <td><span t-esc="line.code"/>:</td>
+                                        <td><span t-esc="line.amount"/></td>
+                                    </t>
+                                </tr>
+                            </t>
+                        </table>
+                        
+                        <!-- these rules are the ones we want to use for our online model -->
+                        <table style="width: 100%;">
+                            <!-- this will store the value of each deduction -->
+                            <t t-set="x" t-value="0"/>
+                            <t t-foreach="doc.line_ids" t-as="line">
+                                <t t-if="line.category == 'Deduction'">
+                                    <!-- we check if this has a category of deduction and add the amount -->
+                                    <t t-set="x" t-value="x + line.amount"/>
+                                </t>
+                                <tr>
+                                    <!-- we check if we are at the end of the tuple and only then display empty cells for alignment -->
+                                    <t t-if="doc.line_ids.index(line) == (doc.line_ids.length -1)">
+                                        <td/><td/>
+                                    </t>
+                                    <t t-if="line.name == 'Basic Salary' || line.code == 'BASIC'">
+                                        <td>Basic Salary:</td>
+                                        <td><span t-esc="line.amount"/></td>
+                                    </t>
+                                    <!-- we check if we have reached the end of the tuple and only then will we show the result-->
+                                    <t t-if="doc.line_ids.index(line) == (doc.line_ids.length -1)">
+                                        <td>Total Deductions:</td>
+                                        <td><span t-esc="x"/></td>
+                                    </t>
+                                    <t t-if="line.name == 'Basic Salary' || line.code == 'BASIC'">
+                                        <td>Benefits:</td>
+                                        <td><span t-esc="line.amount"/></td>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <t t-if="line.code == 'BENEFITS'">
+                                        <td><span t-esc="line.code"/>:</td>
+                                        <td><span t-esc="line.amount"/></td>
+                                    </t>
+                                    <t t-if="line.code == 'TAX'">
+                                        <td><span t-esc="line.code"/>:</td>
+                                        <td><span t-esc="line.amount"/></td>
+                                    </t>
+                                    <t t-if="line.code == 'NET'">
+                                        <td><span t-esc="line.code"/>:</td>
+                                        <td><span t-esc="line.amount"/></td>
+                                    </t>
+                                </tr>
+                            </t>
+                        </table>
+
+                        <!-- these rules are the default rules -->
+
+                        <!-- <tr t-foreach="doc.line_ids.filtered(lambda line: line.appears_on_payslip)" t-as="line">
+                            <td>
+                                <span t-field="line.code"/>
+                            </td>
+                            <td>
+                                <span t-field="line.name"/>
+                            </td>
+                            <td>
+                                <span t-field="line.quantity"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.amount"
+                                        t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                            </td>
+                            <td>
+                                <span t-esc="line.total"
+                                        t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                            </td>
+                        </tr> -->
+
+                        <!-- these rules apply to your model -->
+
+                        <!-- <table style="width: 100%;">
+                            <t t-foreach="doc.line_ids" t-as="line">
+                                <tr>
+                                    <t t-if="line.code == 'GROSS'">
+                                        <td><span t-esc="line.code"/>:</td>
+                                        <td><span t-esc="line.amount"/></td>
+                                    </t>
+                                    <t t-if="line.code == 'DEDUCTIONS'">
+                                        <td><span t-esc="line.code"/>:</td>
+                                        <td><span t-esc="line.amount"/></td>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <t t-if="line.code == 'BENEFITS'">
+                                        <td><span t-esc="line.code"/>:</td>
+                                        <td><span t-esc="line.amount"/></td>
+                                    </t>
+                                    <t t-if="line.code == 'TAX'">
+                                        <td><span t-esc="line.code"/>:</td>
+                                        <td><span t-esc="line.amount"/></td>
+                                    </t>
+                                    <t t-if="line.code == 'NET'">
+                                        <td><span t-esc="line.code"/>:</td>
+                                        <td><span t-esc="line.amount"/></td>
+                                    </t>
+                                </tr>
+                            </t>
+                        </table> -->
+                        <hr/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- remittance form -->
+    <template id="report_nssa_remittance">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <style>
+                        .page{
+                            font-size: 1.2em !important;
+                            font-family: Barlow !important;
+                            margin: auto;
+                            width: 90%;
+                        }
+                        .blue{
+                            color: #0000FF !important;
+                        }
+                    </style>
+                    <!-- <span t-esc="wcif"/><hr/>
+                    <span t-esc="employees_count"/><hr/>
+                    <span t-esc="total_wages"/><hr/>
+                    <span t-esc="wcif_contributions"/><hr/>
+                    <span t-esc="nps_contributions"/><hr/> -->
+
+                    <!-- the header -->
+                    <div class = "row">
+                        <div class = "col-3">
+                            <img height = "200" src="/nursery/static/src/img/nssa.png" style="max-height: 200px; margin-left: -70px !important;" />
+                        </div>
+                        <div class = "col-9"  style = "margin-top: 60px !important;">
+                            <h6 class = "text-right font-weight-bold">REMITTANCE ADVICE : FORM P4 A</h6>
+                            <h4 class = "text-right font-weight-bold">NATIONAL SOCIAL SECURITY AUTHORITY</h4>
+                        </div>
+                    </div>
+
+                    <!-- the submenu goes here -->
+                    <div class="row">
+                        <div class="col-4">
+                            <span class="mr-4 font-weight-bold">SSR No:</span>
+                            <span class="font-weight-bold">0214261V</span>
+                        </div>
+                        <div class="col-4">
+                            <span class="mr-4 font-weight-bold">Industry Code (IC):</span>
+                            <span class="font-weight-bold"></span>
+                        </div>
+                        <div class="col-4">
+                            <span class="mr-4 font-weight-bold">WCIF Rate:</span>
+                            <span class="font-weight-bold"><t t-esc="wcif"/>%</span>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="mr-4 font-weight-bold">Contribution Date:</span>
+                        <span class="font-weight-bold" t-esc="contribution_date" />
+                    </div>
+                    <div>
+                        <span class="mr-4 font-weight-bold">Employer's Name:</span>
+                        <span class="font-weight-bold" t-esc="employer" />
+                    </div>
+                    <div>
+                        <span class="mr-4 font-weight-bold">Address:</span>
+                        <span class="font-weight-bold" t-esc="address"/>
+                    </div>
+                    <div>
+                        <span class="mr-4 font-weight-bold">Tel:</span>
+                        <span class="font-weight-bold" t-esc="contact" />
+                    </div>
+
+                    <!-- table goes here -->
+                    <div style = "margin-top: 15px;">Cash/RTGS/Cheque Number:</div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>CONTRIBUTION PAYABLE FOR:</th>
+                                <th>NPS</th>
+                                <th>WCIF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Number of employees</td>
+                                <td><span t-esc="employees_count" /></td>
+                                <td><span t-esc="employees_count" /></td>
+                            </tr>
+                            <tr>
+                                <td>Total Insurable Earnings</td>
+                                <td><span t-esc="total_wages" /></td>
+                                <td><span t-esc="total_wages" /></td>
+                            </tr>
+                            <tr>
+                                <td>Current Contributions:</td>
+                                <td><span t-esc="nps_contributions" /></td>
+                                <td><span t-esc="wcif_contributions" /></td>
+                            </tr>
+                            <tr>
+                                <td>Arrears:</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Prepayments:</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Surcharge:</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Total Payment:</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="text-right font-weight-bold">GRAND TOTALS:</td>
+                                <td colspan="2" class="text-center font-weight-bold"><t t-esc="wcif_contributions + nps_contributions"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- footer goes here -->
+                    <div style = "width: 85%">
+                        <p>
+                            In terms of SI 393 of 1993 as amended, the employer must remit contributions by the 10th day of the
+                            month following deduction, whether or not an invoice has been received.
+                            **Failure to pay contributions by the 10th of the month will result in surcharges and interest being levied
+                            on your account. **In the event of WCIF payment not being made by the due date, you are considered
+                            uninsured.
+                        </p>
+                        <p>
+                            In case of any queries, please contact the Collections Enquiry Office at your nearest Regional Office.
+                        </p>
+                        <p>
+                            DECLARATION: I declare that the above information is a true reflection of the contribution due in respect
+                            of all insured employees for the month.
+                        </p>
+                        <p>
+                            Signed:__________________________________Date:<t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+                        </p>
+                        <p>
+                            <span style = "margin-right: 15px;"><b>Name:<span class="pl-4" t-esc="user.name" /></b></span>
+                            <span style = "margin-right: 15px;"><b>Position Held: <span class="pl-4">ADMINISTRATOR</span></b></span>
+                        </p>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- nssa p4 form -->
+    <template id="report_nssa_form">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class="page" >
+                    <style>
+                        .page{
+                            font-size: 0.75em !important;
+                            font-family: Barlow !important;
+                            margin: auto;
+                            width: 85%;
+                        }
+                        .row{
+                            margin-bottom: 8px;
+                            font-weight: bold !important;
+                        }
+                        .blue{
+                            color: #0000FF !important;
+                        }
+                    </style>
+                    <!-- some static values will need to query -->
+                    <t t-set="company" t-value="unspecified"/>
+                    <t t-set="address" t-value="unspecified"/>
+                    <t t-foreach="docs" t-as="doc">
+                        <t t-if="doc.company_id">
+                            <t t-set="company" t-value="doc.company_id.name"/>
+                            <t t-set="address" t-value="doc.company_id.company_details"/>
+                            <t t-set="email" t-value="doc.company_id.email"/>
+                            <t t-set="contact" t-value="doc.company_id.phone"/>
+                        </t>
+                    </t>
+
+
+                    <!-- header of the form -->
+                    <div class="row" style="margin-top: 12px;">
+                        <div class="col-4">
+                            <div class="text-danger">FORM P4</div>
+                            <div>Monthly Payment Schedule of Employees</div>
+                            <div style="margin-top: 20px;">
+                                <div><span class="pr-4">Employer SSR:</span><span class="blue">0214261V</span></div>
+                                <div><span class="pr-4">Employer EC:</span><span class="blue">0214261V</span></div>
+                                <div><span class="pr-4">Employer's Name:</span><span class="blue"><t t-esc="company"/></span></div>
+                                <div><span class="pr-4">Employer's Physical Address:</span><span class="blue"><t t-esc="address"/></span></div>
+                            </div>
+                        </div>
+                        <div class="col-4 d-flex justify-content-center">
+                             <img height = "120" src="/nursery/static/src/img/nssa.png" style="max-height: 125px;" />
+                        </div>
+                        <div class="col-4" style="margin-left: 30px;">
+                            <div>National Social Security Authority</div>
+                            <div>Selous Avenue/Sam Nujoma</div>
+                            <div>P.O. Box CY1387</div>
+                            <div>Causeway, Harare</div>
+                            <div>Telephone (04) 706523-5</div>
+                            <div>Fax (04) 796320</div>
+                            <div>Payment Month and Year: <span class="blue" t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/></div>
+                            <div>Sector: </div>
+                            <div>Email Address: <span class="blue" t-esc="email"/></div>
+                            <div>Contact: <span class="blue" t-esc="contact"/></div>
+                        </div>
+                    </div>
+
+                    <!-- some useful information -->
+                    <div style = "font-weight: bold; margin-top: 15px; margin-bottom: 6px;">
+                        <div>Reason for Cessation: - Insert C for Casual Employee, R for Retirement, D for Death, O for any other reason for cessation</div>
+                        <div>Nature of Employment - Insert A if Arduous employment, and N for Normal Employment</div>
+                    </div>
+
+                    <!-- table view of all payslips and their employee owners -->
+                    <table class="table-sm table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <td/>
+                                <td><b>SSN</b></td>
+                                <td><b>Employee Staff No</b></td>
+                                <td><b>National ID No</b></td>
+                                <td><b>Period</b></td>
+                                <td><b>Date</b></td>
+                                <td><b>Name</b></td>
+                                <td><b>Commencement Date</b></td>
+                                <td><b>Cessation Date</b></td>
+                                <td><b>Reason for Cessation</b></td>
+                                <td><b>Nature of employment</b></td>
+                                <td><b>NPS Insuarable Earnings</b></td>
+                                <td><b>Total NPS (9%) Contribution</b></td>
+                                <td><b>Basic Salary (WCIF)</b></td>
+                                <td><b>Actual Insuarable Earnings</b></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="count" t-value="0"/>
+                            <t t-foreach="docs" t-as="doc">
+                                <t t-foreach="doc.employee_id" t-as="employee">
+                                    <t t-set="count" t-value="count + 1"/>
+                                    <tr>
+                                        <td><span t-esc="count" style="font-weight: bolder;"/></td>
+                                        <td><span t-esc="employee.ssnid" /></td>
+                                        <td><span t-esc="employee.id" /></td>
+                                        <td><span t-esc="employee.identification_id" /></td>
+                                        <td>
+                                            <span t-esc="doc.date_from" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/>
+                                            -
+                                            <span t-esc="doc.date_to" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="doc.create_date" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/>
+                                        </td>
+                                        <td><span t-esc="employee.name" /></td>
+                                        <td><span t-esc="doc.contract_id.date_start" /></td>
+                                        <td/>
+                                        <td/>
+                                        <td><span t-esc="doc.contract_id.contract_type_id.name" /></td>
+                                        <td><span t-esc="doc.contract_id.wage" /></td>
+                                        <!-- doc.line_ids -->
+                                        <td><span t-esc="doc.contract_id.wage * 0.09" /></td>
+                                        <td>
+                                            <t t-foreach="doc.line_ids" t-as="line">
+                                                <t t-if="line.code == 'BASIC' or line.category_id.name == 'Basic'">
+                                                    <span t-esc="line.amount"/>
+                                                </t>
+                                            </t>
+                                        </td>
+                                        <td><span t-esc="doc.contract_id.wage" /></td>
+                                    </tr>
+                                </t>
+                            </t>
+                            <!-- we run some culculations to get totals -->
+                            <t t-set="total_nps" t-value="0"/>
+                            <t t-set="total" t-value="0"/>
+                            <t t-foreach="docs" t-as="doc">
+                                <t t-set="total" t-value="total + doc.contract_id.wage"/>
+                                <t t-set="total_nps" t-value="total_nps + (doc.contract_id.wage * 0.09)"/>
+                            </t>
+                            <tr class="text-danger">
+                                <td style="font-weight: bold !important;">PERIOD</td>
+                                <td style="font-weight: bold !important;">TOTALS</td>
+                                <td/><td/><td/><td/><td/><td/><td/><td/><td/>
+                                <td><span style="font-weight: bold !important; border-top: 1px solid black;" t-esc = "total"/></td>
+                                <td><span style="font-weight: bold !important;  border-top: 1px solid black;" t-esc = "total_nps"/></td>
+                                <td><span style="font-weight: bold !important;  border-top: 1px solid black;" t-esc = "total"/></td>
+                                <td><span style="font-weight: bold !important;  border-top: 1px solid black;" t-esc = "total"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- footer information and notes -->
+                    <div style = "margin-top: 8px;">
+                        <span style = "margin-right: 15px;"><b>Employer's Representative:</b><b class="blue pl-3" t-esc="user.name"/></span>
+                        <span style = "margin-right: 15px;"><b>Designation:</b><b class="blue pl-3">ADMINISTRATOR</b></span>
+                        <span style = "margin-right: 15px;"><b>Date:</b> <b class="blue pl-3" t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/></span>
+                    </div>
+                    <div style = "margin-top: 8px; width: 70%;">
+                        <b>Note:</b> Use the National I.D. to identify employees pending the issue of Social Security Numbers.
+                        The information given in this form may be used for the purposes of other Schemes administered by NSSA.
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+        <!-- zimra p2 form -->
+    <template id="report_zimra_form">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <style>
+                        .page{
+                            font-size: 1em !important;
+                            font-family: Barlow !important;
+                            margin: auto;
+                            width: 85%;
+                        }
+                    </style>
+
+                    <!-- the header -->
+                    <div class="row">
+                        <div class="col-3">
+                        </div>
+                        <div class="col-6 text-center" style = 'margin-top: 60px;'>
+                            <h3 class = "font-weight-bold">ZIMBABWE REVENUE AUTHORITY</h3>
+                            <h5 class = "font-weight-bold">Return For The Remittance of P.A.Y.E.</h5>
+                        </div>
+                        <div class="col-3 d-flex justify-content-center" style="margin-left: 30px; margin-top: -10px;">
+                            <div style = "margin-left: 20px;">
+                                <img height = "120" src="/nursery/static/src/img/zimra.png" style="max-height: 120px; margin-left: -70px !important;" />
+                                <h5 class = "font-weight-bold" style = "margin-top: -12px; z-index: 999;">FORM P2</h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- the sub-header -->
+                    <div class="row" style = "margin-top: 20px;">
+                        <div class="col-4">
+                            Region:    <t t-esc="city"/>
+                        </div>
+                        <div class="col-4">
+                            Station:    <t t-esc="country"/>
+                        </div>
+                        <div class="col-4">
+                            For the month of:    <t t-esc="month"/>-<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>
+                        </div>
+                    </div>
+
+                    <!-- first table -->
+                    <h4 style = "margin-top: 20px; margin-bottom: 20px;">Part A</h4>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr><td class="font-weight-bold">Employer's Name</td><td><t t-esc="employer"/></td></tr>
+                            <tr><td class="font-weight-bold">Trade Name</td><td><t t-esc="employer"/></td></tr>
+                            <tr><td class="font-weight-bold">Business Partner Number</td><td><t t-esc="bpn"/></td></tr>
+                            <tr><td class="font-weight-bold">Physical Address</td><td><t t-esc="address"/></td></tr>
+                            <tr><td class="font-weight-bold">Postal Address</td><td><t t-esc="address"/></td></tr>
+                            <tr><td class="font-weight-bold">Tax Period</td><td><t t-esc="period"/></td></tr>
+                            <tr><td class="font-weight-bold">Due Date</td><td><t t-esc="due_date"/></td></tr>
+                            <tr><td class="font-weight-bold">E-mail address</td><td><t t-esc="email"/></td></tr>
+                            <tr><td class="font-weight-bold">Cell number</td><td><t t-esc="contact"/></td></tr>
+                        </tbody>
+                    </table>
+
+                     <!-- second table -->
+                    <h4 style = "margin-top: 20px; margin-bottom: 20px;">Part B</h4>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr><td class="font-weight-bold">Total Remuneration</td><td><t t-esc="total_wages"/></td></tr>
+                            <tr><td class="font-weight-bold">Number of Employees (including contract employees)</td><td><t t-esc="employees_count"/></td></tr>
+                            <tr><td class="font-weight-bold">Gross P.A.Y.E.</td><td><t t-esc="gross_paye"/></td></tr>
+                            <tr><td class="font-weight-bold">AIDS Levy @ 3%</td><td><t t-esc="aids"/></td></tr>
+                            <tr><td class="font-weight-bold">Total Tax Due</td><td><t t-esc="total_tax"/></td></tr>
+                        </tbody>
+                    </table>
+                    <!-- footer -->
+                    <div style="margin-top: 20px; margin-bottom: 8px;">
+                        <p>I declare that the information I have given on this form is correct and complete.</p>
+                    </div>
+                    <div class="row" style="margin-bottom: 8px;">
+                        <div class="col-4">
+                            <div><t t-esc="user.name" /></div>
+                            <small>Name:</small>      
+                        </div>
+                        <div class="col-4">
+                            <div>ADMINISTRATOR</div>
+                            <small>Designation:</small>      
+                        </div>
+                        <div class="col-4">
+                            <div>_________________________</div>
+                            <small>Signature:</small>
+                        </div>
+                    </div>
+                    <div style = "width: 70%;"></div>
+                    <div style = "width: 60%;">
+                        <h6 class="font-weight-bold">Please note that:</h6>
+                        <p>1. Interest is charged at 10% per annum for late remittance of PAYE</p>
+                        <p>2. Late payments may attract penalties</p>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+
+
+
+
+    <!-- payroll summary form -->
+    <template id="report_payroll_summary_form">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <style>
+                        .page{
+                            font-size: 0.9em !important;
+                            font-family: Barlow !important;
+                            margin: auto;
+                            width: 85%;
+                        }
+                    </style>
+
+                    <!-- header -->
+                    <div class="row" style="margin-top: 20px; margin-bottom: 40px;">
+                        <div class="col-3">
+                            <img height="140" style="overflow: hidden !important; max-height: 140px !important; margin-top: -5px;" t-attf-src="/web/binary/company_logo" alt="logo here"/>
+                        </div>
+                        <div class="col-7">
+                            <div class="mx-auto w-75">
+                                <h4 t-esc="company" class="font-weight-bold text-center"/>
+                                <h6 class="font-weight-bold text-center">PAYROLL SUMMARY FOR THE PERIOD FROM:</h6>
+                                <h6 class="font-weight-bold text-center"><t t-esc="period"/></h6>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                        </div>
+                    </div>
+
+
+                    <!-- table -->
+                    <table class="table-sm table-borderless w-100">
+                        <thead>
+                            <tr>
+                                <th class="font-weight-bold" colspan="3">TOTAL EARNINGS</th>
+                                <th class="font-weight-bold">ENTRIES</th>
+                                <th class="font-weight-bold"></th>
+                                <th class="font-weight-bold"> DEDUCTIONS</th>
+                                <th class="font-weight-bold">ENTRIES</th>
+                                <th class="font-weight-bold"></th>
+                                <th class="font-weight-bold">COMPANY CONTRIBUTIONS</th>
+                                <th class="font-weight-bold"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="3">Basic</td>
+                                <td t-esc="entries"/>
+                                <td t-esc="basic"/>
+                                <td>P.A.Y.E</td>
+                                <td t-esc="entries"/>
+                                <td t-esc="paye"/>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">Allowances</td>
+                                <td t-esc="entries"/>
+                                <td t-esc="allowances"/>
+                                <td>AIDS Levy</td>
+                                <td t-esc="entries"/>
+                                <td t-esc="aids"/>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="5"></td>
+                                <td>NSSA</td>
+                                <td t-esc="entries"/>
+                                <td t-esc="nssa"/>
+                                <td>NSSA</td>
+                                <td t-esc="nssa"/>
+                            </tr>
+                            <tr>
+                                <td colspan="5"></td>
+                                <td>NEC</td>
+                                <td t-esc="entries"/>
+                                <td t-esc="nec"/>
+                                <td>NEC</td>
+                                <td t-esc="nec"/>
+                            </tr>
+                            <tr>
+                                <td colspan="8"></td>
+                                <td>WCIF</td>
+                                <td t-esc="wcif_contributions"/>
+                            </tr>
+                            <tr>
+                                <td colspan="8"></td>
+                                <td>Zimdef</td>
+                                <td t-esc="zimdef"/>
+                            </tr>
+                            <tr>
+                                <td colspan="8"></td>
+                                <td>Standards Development Levy</td>
+                                <td/>
+                            </tr>
+                            <tr>
+                                <td colspan="8"></td>
+                                <td>Stabilization Fund</td>
+                                <td/>
+                            </tr>
+                            <tr class = "font-weight-bold" style = "background-color: #EDEDED;">
+                                <td colspan="4">Total Gross Pay</td>
+                                <td t-esc="gross"/>
+                                <td colspan="2">Total Deductions</td>
+                                <td t-esc="deductions"/>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr class = "font-weight-bold" style = "background-color: #EDEDED;">
+                                <td>Benefits</td>
+                                <td>0.00</td>
+                                <td colspan="2">Credits</td>
+                                <td>0.00</td>
+                                <td colspan="2">Total Net Pay</td>
+                                <td t-esc="net"/>
+                                <td>Total Employer Contr.</td>
+                                <td t-esc="emp_contributions"/>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- the footer -->
+                    <hr/>
+                    <div class="row" style="margin-top: 8px; margin-bottom: 8px;">
+                        <div class="col-3 font-weight-bold">Initiated By:</div>
+                        <div class="col-3 font-weight-bold">_____________________</div>
+                        <div class="col-3 font-weight-bold">Confirmed By:</div>
+                        <div class="col-3 font-weight-bold">_____________________</div>
+                    </div>
+                    <div class="row" style="margin-top: 8px; margin-bottom: 8px;">
+                        <div class="col-3 font-weight-bold">Verified By:</div>
+                        <div class="col-3 font-weight-bold">_____________________</div>
+                        <div class="col-3 font-weight-bold">Approved By:</div>
+                        <div class="col-3 font-weight-bold">_____________________</div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+
+
+    <!-- payroll summary form -->
+    <template id="report_payroll_printout_form">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <style>
+                        .page{
+                            font-size: 0.9em !important;
+                            font-family: Barlow !important;
+                            margin: auto;
+                            font-weight: bold;
+                            width: 85%;
+                        }
+                    </style>
+
+                    <!-- header -->
+                    <div class="row">
+                        <div class="col-6"></div>
+                        <div class="col-6"></div>
+                    </div>
+                        <t t-foreach="docs" t-as="doc">
+                            <div t-esc="doc.name"/>
+                        </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>
+
+ 
+
+
+<!-- <template id="report_payslip">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Pay Slip</h2>
+                        <p t-field="o.name"/>
+
+                        <table class="table table-sm table-bordered">
+                            <tr>
+                                <td>
+                                    <strong>Name</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id"/>
+                                </td>
+                                <td>
+                                    <strong>Designation</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id.job_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Address</strong>
+                                </td>
+                                <td colspan="3">
+                                    <div t-field="o.employee_id.address_home_id"
+                                         t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Email</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id.work_email"/>
+                                </td>
+                                <td>
+                                    <strong>Identification No</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id.identification_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Reference</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.number"/>
+                                </td>
+                                <td>
+                                    <strong>Bank Account</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id.bank_account_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Date From</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.date_from"/>
+                                </td>
+                                <td>
+                                    <strong>Date To</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.date_to"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Quantity/rate</th>
+                                    <th>Amount</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip)" t-as="line">
+                                    <td>
+                                        <span t-field="line.code"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.quantity"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line.amount"
+                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line.total"
+                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p class="text-right">
+                            <strong>Authorized signature</strong>
+                        </p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template> -->

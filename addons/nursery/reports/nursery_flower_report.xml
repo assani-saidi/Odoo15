@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <report
+        id="nursery_flower_report"
+        string="Flower Overview"
+        model="nursery.flowers"
+        report_type="qweb-pdf"
+        name="nursery.report_flowers"
+        file="nursery.report_flowers"
+    />
+ 
+</odoo>

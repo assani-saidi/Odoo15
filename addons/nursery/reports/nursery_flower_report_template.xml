@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- <template id="report_flower">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <h2>Flower Details</h2>
+            </t>
+        </t>
+    </template> -->
+
+    <template id="report_flowers">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <h2>Flower Details</h2>
+                <t t-esc="doc.name"/>
+                <div><b style="color: red;">price: </b><t t-esc="doc.price"/></div>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="OrderReceipt" t-inherit="point_of_sale.OrderLinesReceipt" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[@class='responsive-price']" position="replace">
+            <t t-esc="line.product_name_wrapped[0]" />
+            <div class="pos-receipt-left-padding">
+                <span>1 x <span t-esc="env.pos.format_currency_no_symbol(line.price_display)" class="price_display"/></span>
+            </div>
+            <div class="responsive-price">
+                <span t-esc="env.pos.format_currency_no_symbol(line.price_display)" class="price_display pos-receipt-right-align"/>
+            </div>
+        </xpath>
+    </t>
+</templates>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- this is the wizard view ui  -->
+    <record id="remmitance_wizard_view" model="ir.ui.view">
+        <field name="name">remmitance_wizard_view</field>
+        <field name="model">nursery.hr</field>
+        <field name="arch" type="xml">
+            <form string="Print NSSA Remittance Form">
+                <group class="oe_title">
+                    <field name="wcif_rate" options="{'no_create_edit': True}" />
+                </group>
+                <footer>
+                    <button name="print_nssa_remittance_report" string="Print" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_open_remittance_view" model="ir.actions.act_window">
+        <field name="name">Print NSSA Remittance Form</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">nursery.hr</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="remmitance_wizard_view"/>
+        <field name="target">new</field>
+    </record>
+</odoo>
